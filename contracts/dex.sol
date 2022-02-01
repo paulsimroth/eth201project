@@ -32,10 +32,10 @@ contract Dex is Wallet {
 
     function createLimitOrder(Side side, bytes32 ticker, uint amount, uint price) public{
         if(side == Side.BUY){
-           require(balances[msg.sender]["ETH"] >= amount.mul(price));
+           require(balances[msg.sender]["ETH"] >= amount.mul(price), "ETH balance must be greater than or equal to buy order value!");
        }
         else if(side == Side.SELL){
-           require(balances[msg.sender][ticker] >= amount);
+           require(balances[msg.sender][ticker] >= amount, "Token balance must be greater than or equal to sell order value!");
        }
 
         Order[] storage orders = orderBook[ticker][uint(side)];

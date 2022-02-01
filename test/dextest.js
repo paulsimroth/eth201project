@@ -11,7 +11,7 @@ contract("Dex", accounts => {
         await truffleAssert.reverts(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)
         )
-        dex.depositEth({value: 10})
+        dex.deposit({value: 10})
         await truffleAssert.passes(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)
         )
@@ -21,6 +21,9 @@ contract("Dex", accounts => {
     it("Should be bigger or equal token balance to sell order value", async () =>{
         let dex = await Dex.deployed()
         let link = await Link.deployed()
+        await truffleAssert.passes(
+            dex.addToken(web3.utils.fromUtf8("LINK"), link.address, {from: accounts[0]})
+        )
         await truffleAssert.reverts(
             dex.createLimitOrder(1, web3.utils.fromUtf8("LINK"), 10, 1)
         )

@@ -9,11 +9,14 @@ contract Wallet is Ownable{
 
     using SafeMath for uint256;
 
+    //token consists of a ticker and the contract address
     struct Token {
         bytes32 ticker;
         address tokenAddress;
     }
+
     mapping(bytes32 => Token) public tokenMapping;
+
     bytes32[] public tokenList;
 
     mapping(address => mapping(bytes32 => uint256)) public balances;
@@ -23,21 +26,37 @@ contract Wallet is Ownable{
         _;
     }
 
+    //add ERC20 Token
     function addToken(bytes32 ticker, address tokenAddress) onlyOwner external {
         tokenMapping[ticker] = Token(ticker, tokenAddress);
         tokenList.push(ticker);
     }
 
+    //deposit  ERC20 Token
     function deposit(uint amount, bytes32 ticker) tokenExist(ticker) external {
         require(amount != 0, "cannot deposit nothing");
         IERC20(tokenMapping[ticker].tokenAddress).transferFrom(msg.sender,address(this), amount);
         balances[msg.sender][ticker] = balances[msg.sender][ticker].add(amount);
-        
     }
 
-     function withdraw(uint amount, bytes32 ticker) tokenExist(ticker) external {
+    //withdraw ERC20 Token
+    function withdraw(uint amount, bytes32 ticker) tokenExist(ticker) external {
         require(balances[msg.sender][ticker] >= amount, "Balance not sufficient");
-        balances[msg.sender][ticker] = balances[msg.sender][ticker].sub(amount);
         IERC20(tokenMapping[ticker].tokenAddress).transfer(msg.sender, amount);
+        balances[msg.sender][ticker] = balances[msg.sender][ticker].sub(amount);
+    }
+
+    //deposit ETH
+    function depositEth() payable external {
+        require(msg.value != 0, "cannot deposit nothing");
+        //IERC20(tokenMapping["ETH"]).transferFrom(msg.sender,address(this), msg.value);
+        balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].add(msg.value);
+    }
+
+    //withdraw ETH
+    function withdrawEth() payable external {
+        require(balances[msg.sender]["ETH"] >= msg.value, "Balance not sufficient");
+        //IERC20(tokenMapping["ETH"]).transfer(msg.sender, msg.value);
+        balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].sub(msg.value);
     }
 }

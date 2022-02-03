@@ -8,10 +8,15 @@ contract("Dex", accounts => {
     it("Should be more or as much ETH as buy order value", async () => {
         let dex = await Dex.deployed()
         let link = await Link.deployed()
+        await link.approve(dex.address, 500);  
+        await truffleAssert.passes(
+            dex.addToken(web3.utils.fromUtf8("LINK"), link.address, {from: accounts[0]})
+        )
         await truffleAssert.reverts(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)
         )
-        dex.deposit({value: 10})
+        dex.depositEth({value: web3.utils.toWei( "10", "ether")})
+        await dex.deposit(100, web3.utils.fromUtf8("LINK"));
         await truffleAssert.passes(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)
         )

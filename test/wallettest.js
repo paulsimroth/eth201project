@@ -32,4 +32,25 @@ contract("Dex", accounts => {
         let link = await Link.deployed()
         await truffleAssert.passes(dex.withdraw(100, web3.utils.fromUtf8("LINK")))
     })
+
+    it("Should handle ETH deposits correctly", async () =>{
+        let dex = await Dex.deployed()
+        let link = await Link.deployed()
+        await dex.depositEth({value: web3.utils.toWei("10", "ether")});
+        let balance = await dex.balances(accounts[0], web3.utils.toWei("10", "ether"))
+        assert.equal(balance.toNumber(), 100) 
+    })
+
+    it("Should handle faulty ETH withdrawals correctly", async () =>{
+        let dex = await Dex.deployed()
+        let link = await Link.deployed()
+        await truffleAssert.reverts(dex.withdrawETH(web3.utils.toWei("100", "ether")))
+    })
+
+    it("Should handle ETH withdrawals correctly", async () =>{
+        let dex = await Dex.deployed()
+        let link = await Link.deployed()
+        await truffleAssert.passes(dex.withdrawEth({value: web3.utils.toWei("10", "ether")}))
+    })
+
 })

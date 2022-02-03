@@ -15,7 +15,7 @@ contract("Dex", accounts => {
         await truffleAssert.reverts(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)
         )
-        dex.depositEth({value: web3.utils.toWei( "10", "ether")})
+        await dex.depositEth({value: web3.utils.toWei( "10", "ether")})
         await dex.deposit(100, web3.utils.fromUtf8("LINK"));
         await truffleAssert.passes(
             dex.createLimitOrder(0, web3.utils.fromUtf8("LINK"), 10, 1)

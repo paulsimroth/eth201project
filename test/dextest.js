@@ -30,12 +30,12 @@ contract("Dex", accounts => {
             dex.addToken(web3.utils.fromUtf8("LINK"), link.address, {from: accounts[0]})
         )
         await truffleAssert.reverts(
-            dex.createLimitOrder(1, web3.utils.fromUtf8("LINK"), 10, 1)
+            dex.createLimitOrder(1, web3.utils.fromUtf8("LINK"), 1000, 1)
         )
         await link.approve(dex.address, 500);
         await dex.deposit(10, web3.utils.fromUtf8("LINK"));
         await truffleAssert.passes(
-            dex.createLimitOrder(1, web3.utils.fromUtf8("LINK"), 10, 1)
+            dex.createLimitOrder(1, web3.utils.fromUtf8("LINK"), 110, 1)
         )
     })
 

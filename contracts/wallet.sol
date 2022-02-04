@@ -26,6 +26,11 @@ contract Wallet is Ownable{
         _;
     }
 
+    //get balance 
+    function balance(bytes32 ticker) external view returns (uint){
+        return balances[msg.sender][ticker];
+    }
+
     //add ERC20 Token
     function addToken(bytes32 ticker, address tokenAddress) onlyOwner external {
         tokenMapping[ticker] = Token(ticker, tokenAddress);
@@ -47,16 +52,17 @@ contract Wallet is Ownable{
     }
 
     //deposit ETH
-    function depositEth() payable external {
+    function depositEth() public payable {
         require(msg.value != 0, "cannot deposit nothing");
         //IERC20(tokenMapping["ETH"]).transferFrom(msg.sender,address(this), msg.value);
-        balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].add(msg.value);
+        balances[msg.sender]["ETH"] += msg.value;
     }
 
     //withdraw ETH
-    function withdrawEth() payable external {
-        require(balances[msg.sender]["ETH"] >= msg.value, "Balance not sufficient");
+    function withdrawEth(uint amount) external {
+        require(balances[msg.sender]["ETH"] >= amount, "Balance not sufficient");
+        payable(msg.sender).transfer(amount);
         //IERC20(tokenMapping["ETH"]).transfer(msg.sender, msg.value);
-        balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].sub(msg.value);
+        balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].sub(amount);
     }
 }

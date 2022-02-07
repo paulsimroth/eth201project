@@ -2,7 +2,7 @@ const Dex = artifacts.require("Dex")
 const Link = artifacts.require("Link")
 const truffleAssert = require('truffle-assertions');
 
-contract.skip("Dex", accounts => {
+contract("Dex", accounts => {
     //When creating a SELL market order, the seller needs to have enough tokens for the trade
     it("Should throw an error when creating a sell market order without adequate token balance", async () => {
         let dex = await Dex.deployed()
@@ -138,7 +138,7 @@ contract.skip("Dex", accounts => {
     })
 
     //Filled limit orders should be removed from the orderbook
-    xit("Filled limit orders should be removed from the orderbook", async () => {
+    it("Filled limit orders should be removed from the orderbook", async () => {
         let dex = await Dex.deployed()
         let link = await Link.deployed()
         await dex.addToken(web3.utils.fromUtf8("LINK"), link.address)

@@ -54,7 +54,6 @@ contract Wallet is Ownable{
     //deposit ETH
     function depositEth() public payable {
         require(msg.value != 0, "cannot deposit nothing");
-        //IERC20(tokenMapping["ETH"]).transferFrom(msg.sender,address(this), msg.value);
         balances[msg.sender]["ETH"] += msg.value;
     }
 
@@ -62,7 +61,6 @@ contract Wallet is Ownable{
     function withdrawEth(uint amount) external {
         require(balances[msg.sender]["ETH"] >= amount, "Balance not sufficient");
         payable(msg.sender).transfer(amount);
-        //IERC20(tokenMapping["ETH"]).transfer(msg.sender, msg.value);
         balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].sub(amount);
     }
 }

@@ -2,7 +2,7 @@ const Dex = artifacts.require("Dex")
 const Link = artifacts.require("Link")
 const truffleAssert = require("truffle-assertions");
 
-contract("Dex", accounts => {
+contract.skip("Dex", accounts => {
 
 //The User must have ETH deposited such that deposited ETH >= buy order value
     it("Should be more or as much ETH as buy order value", async () => {
@@ -52,9 +52,11 @@ contract("Dex", accounts => {
         let orderbook = await dex.getOrderBook(web3.utils.fromUtf8("LINK"), 0);
         assert(orderbook.length>0);
 
+        console.log(orderbook);
+
         for (let i = 0; i < orderbook.length - 1; i++) {
-            const element = array[index];
-            assert(orderbook[i].price >= orderbook[i+1].price, "not right order in buy book")
+            
+            assert(orderbook[i].price >= orderbook[i+1].price, "not right order in BUY book")
         }
     })
 
@@ -70,9 +72,11 @@ contract("Dex", accounts => {
 
         let orderbook = await dex.getOrderBook(web3.utils.fromUtf8("LINK"), 1);
         assert(orderbook.length>0);
-        
+
+        console.log(orderbook);
+
         for (let i = 0; i < orderbook.length - 1; i++) {
-            const element = array[index];
+           
             assert(orderbook[i].price <= orderbook[i+1].price, "not right order in SELL book")
         }
     })

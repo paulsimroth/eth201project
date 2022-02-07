@@ -20,6 +20,7 @@ contract Dex is Wallet {
         bytes32 ticker;
         uint amount;
         uint price;
+        uint filled;
     }
 
     uint public nextOrderId = 0;
@@ -43,7 +44,7 @@ contract Dex is Wallet {
             Order(nextOrderId, msg.sender, side, ticker, amount, price)
         );
 
-        //Bubble sort
+        //Bubble sort for both order books
         uint i = orders.length > 0 ? orders.length - 1 : 0;
 
         if(side == Side.BUY){
@@ -72,8 +73,33 @@ contract Dex is Wallet {
         nextOrderId++;
     }
 
-   // function createMarketOrder() public{
-   //    
-   // }
+    function createMarketOrder(Side side, bytes32 ticker, uint amount) public{
+        require(balances[msg.sender][ticker] >= amount, "Insufficient balance");
+
+        uint orderBookSide;
+        if(side == Side.BUY){
+            orderBookSide = 1;
+        }
+        else if (side == Side.SELL){
+            orderBookSide = 0;
+        }
+
+        Order[] storage orders = orderBook[ticker][orderBookSide];
+
+        uint totalFilled;
+
+        for (uint256 i = 0; i < orders.length && totalFilled < amount; i++){
+            //Filling from order[i]
+
+            //update totalFilled
+
+            //Execute trade & shift balances
+
+            //Verify buyer has enough ETH for transaction
+            
+        }
+
+        //Loop through orderbook, remove 100% filled orders
+    }
 
 }

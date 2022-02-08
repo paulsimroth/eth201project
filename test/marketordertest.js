@@ -6,6 +6,7 @@ contract("Dex", accounts => {
     //When creating a SELL market order, the seller needs to have enough tokens for the trade
     it("Should throw an error when creating a sell market order without adequate token balance", async () => {
         let dex = await Dex.deployed()
+        let link = await Link.deployed()
 
         let balance = await dex.balances(accounts[0], web3.utils.fromUtf8("LINK"))
         assert.equal( balance.toNumber(), 0, "Initial LINK balance is not 0" );
@@ -17,7 +18,8 @@ contract("Dex", accounts => {
     //Market orders can be submitted even if the order book is empty
     it("Market orders can be submitted even if the order book is empty", async () => {
         let dex = await Dex.deployed()
-        
+        let link = await Link.deployed()
+
         await dex.depositEth({value: 50000});
 
         let orderbook = await dex.getOrderBook(web3.utils.fromUtf8("LINK"), 0); //Get buy side orderbook

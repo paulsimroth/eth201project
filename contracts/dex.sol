@@ -43,7 +43,7 @@ contract Dex is Wallet {
 
         Order[] storage orders = orderBook[ticker][uint(side)];
         orders.push(
-            Order(nextOrderId, msg.sender, side, ticker, amount, price)
+            Order(nextOrderId, msg.sender, side, ticker, amount, price, filled)
         );
 
         //Bubble sort for both order books
@@ -120,7 +120,7 @@ contract Dex is Wallet {
                 uint toSend = amount;
                 balances[msg.sender]["ETH"] = balances[msg.sender]["ETH"].sub(amount);
                 //transfer tokens from seller to buyer
-                uint toReceive
+                uint toReceive;
             }
             else if(side == Side.SELL){
                 //msg.sender = seller

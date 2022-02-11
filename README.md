@@ -1,8 +1,8 @@
 # Ethereum201-course-project
 
-This is my repository for the project as part of the course Ethereum Smart Contract Programming 201 at Moralis Academy which I finished on February 9th 2022.
+This is my repository for the project as part of the course Ethereum Smart Contract Programming 201 at Moralis Academy.
 
-The project is a decentralized Exchange.
+The project is a decentralized Exchange built using Truffle and Openzeppelin.
 It consists of a wallet contract and a dex contract which inherits from the wallet.
 The token contract is there for testing.
 

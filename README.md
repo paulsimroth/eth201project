@@ -1,4 +1,4 @@
-# Ethereum201-course-project
+# Ethereum DEX
 
 This is my repository for the project as part of the course Ethereum Smart Contract Programming 201 at Moralis Academy.
 
